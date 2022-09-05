@@ -26,19 +26,22 @@ public class AtendimentoController {
 	
 	@RequestMapping("/cadastrar")
 	public ModelAndView index1(Atendimento atendimento) {
-		
-		ModelAndView mv = new ModelAndView("home/home");
-		
-		return mv;
+		ModelAndView modelAndView = new ModelAndView("home/home");
+		modelAndView.addObject("atendimento", Atendimento.builder().build());
+		return modelAndView;
 	}
 	
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
 	public ModelAndView cadastrar(Atendimento atendimento, BindingResult result, RedirectAttributes attributes, String dataAtendimento) {
 		
 		atendimento.setDataAtendimento(LocalDateTime.parse(dataAtendimento));
-		atendimentoService.save(atendimento);
 		
-		attributes.addFlashAttribute("mensagem", "Atendimento Salvo com sucesso!");
+		if (atendimento.getId() != null) {
+			attributes.addFlashAttribute("mensagem", "Atendimento Atualizado com Sucesso!");
+		}else {
+			attributes.addFlashAttribute("mensagem", "Atendimento Salvo com Sucesso!");
+		}
+		atendimentoService.save(atendimento);
 		return new ModelAndView("redirect:/atendimento/cadastrar");
 	}
 	
@@ -50,8 +53,9 @@ public class AtendimentoController {
 	}
 	
 	@RequestMapping("/deletar/{id}")
-	public ModelAndView deletar(@PathVariable Long id) {
+	public ModelAndView deletar(@PathVariable Long id, RedirectAttributes attributes) {
 		atendimentoService.deleteById(id);
+		attributes.addFlashAttribute("mensagem", "Atendimento Deletado com Sucesso!");
 		return new ModelAndView("redirect:/atendimento/listar");
 	}
 	
@@ -60,7 +64,7 @@ public class AtendimentoController {
 		ModelAndView modelAndView = new ModelAndView("home/home");
 		Atendimento atendimento = atendimentoService.findById(id);
 		modelAndView.addObject("atendimento", atendimento);
-		modelAndView.addObject("dataAtendimento", atendimento.getDataAtendimento());
+//		modelAndView.addObject("dataAtendimento", atendimento.getDataAtendimento());
 		return modelAndView;
 	}
 	

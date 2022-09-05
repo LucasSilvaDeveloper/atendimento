@@ -33,6 +33,7 @@ public class Atendimento {
 	
 	private String tipoAtendimento;
 	
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime dataAtendimento;
 	
 }
