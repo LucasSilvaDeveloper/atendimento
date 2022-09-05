@@ -21,4 +21,8 @@ public class LoginController {
 		return "redirect:/login";
 	}
 	
+	@RequestMapping("/logout")
+	public String logout() {
+		return "login.html";
+	}
 }
