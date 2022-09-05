@@ -58,7 +58,7 @@ public class AtendimentoController {
 	@RequestMapping("/editar/{id}")
 	public ModelAndView editar(@PathVariable Long id) {
 		ModelAndView modelAndView = new ModelAndView("home/home");
-		var atendimento = atendimentoService.findById(id);
+		Atendimento atendimento = atendimentoService.findById(id);
 		modelAndView.addObject("atendimento", atendimento);
 		modelAndView.addObject("dataAtendimento", atendimento.getDataAtendimento());
 		return modelAndView;
