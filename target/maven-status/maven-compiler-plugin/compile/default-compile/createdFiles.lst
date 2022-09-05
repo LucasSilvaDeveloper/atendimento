@@ -1,0 +1,14 @@
+br\com\base\project\repository\UsuarioRepository.class
+br\com\base\project\model\Atendimento.class
+br\com\base\project\model\Usuario.class
+br\com\base\project\controller\AtendimentoController.class
+br\com\base\project\config\security\SecurityConfig.class
+br\com\base\project\controller\LoginController.class
+br\com\base\project\CoreProjectApplication.class
+br\com\base\project\controller\HomeController.class
+br\com\base\project\service\AtendimentoService.class
+br\com\base\project\model\Atendimento$AtendimentoBuilder.class
+br\com\base\project\config\WebConfig.class
+br\com\base\project\repository\AtendimentoRepository.class
+br\com\base\project\config\security\SecurityInitializer.class
+br\com\base\project\config\security\AppUserDetailsService.class

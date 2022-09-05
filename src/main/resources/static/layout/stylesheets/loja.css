@@ -1,0 +1,30 @@
+/*
+###############################
+UTILIDADES
+###############################
+*/
+
+.loja-glyphicon-large{
+	font-size: 18px;
+}
+
+
+/*
+###############################
+COMPONENTES
+###############################
+*/
+
+/* FIELD ACTION */
+.loja-field-action{
+	display: flex;
+}
+
+.loja-field-action-icon{
+	margin: 6px 0 0 5px;
+}
+
+.title{
+	font-size: 18px;
+	font-weight: bolder;
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout-padrao}">
+<head>
+	<title>Cadastro de Atendimento</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/layout/stylesheets/uikit.min.css}" />
+</head>
+<body>
+	<section class="aw-layout-content  js-content" layout:fragment="conteudo">
+					<div class="page-header">
+				<div class="container-fluid">
+					<h1>
+						Cadastro de Atendimento
+					</h1>
+				</div>
+			</div>
+	
+			<div class="container-fluid">
+			
+				<div th:replace="fragments/mensagens-sucesso-salvar :: sucesso-save"></div>
+			
+				<form class="form-vertical js-form-loading" method="POST" th:object="${atendimento}" th:action="@{/atendimento/cadastrar}">
+					
+<!-- 					<div th:replace="fragments/mensagens-erro-validacao :: errors"></div> -->
+				
+					<div class="row">
+							<input id="id" type="text" class="form-control" th:field="*{id}" hidden="true"/>
+					
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label for="nome">Nome da Fisioterapeuta</label>
+								<input id="nome" type="text" class="form-control" th:field="*{nomeFisioterapeuta}"/>
+							</div>
+						</div>
+						
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label for="nome">Nome do Aluno</label>
+								<input id="nome" type="text" class="form-control" th:field="*{nomeAluno}"/>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+					
+					<div class="col-sm-3 form-group" >
+							<label for="estilo">Tipo de Atendimento</label>
+							<div class="loja-field-action">
+								<select id="estilo" class="form-control" th:field="*{tipoAtendimento}">
+									<option value="Pilates" selected="selected">Pilates</option>
+									<option value="Pilates Kids">Pilates Kids</option>
+								</select>	 
+							</div>
+						</div>
+						
+						<div class="col-sm-3">
+							<div class="form-group">
+								<label for="dataNascimento">Data e Horario do Atendimento</label>
+								<input id="dataAtendimento" type="datetime-local" class="form-control" name="dataAtendimento" required="required"/>
+							</div>
+						</div>
+						
+					</div>
+				
+					<div class="form-group">
+						<button class="btn  btn-primary" type="submit">Salvar</button>
+					</div>
+				</form>
+				
+			</div>
+	</section>
+	
+<!-- 	<th:block layout:fragment="javascript-extra"> -->
+<!-- 		<script type="text/javascript"> -->
+// 			var now = new Date();
+// 			now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+// 			document.getElementById('dataAtendimento').value = now.toISOString().slice(0,16);
+<!-- 		</script> -->
+<!-- 	</th:block> -->
+	
+</body>
+</html>
