@@ -2,6 +2,7 @@ package br.com.base.project.controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 import javax.servlet.http.HttpServletResponse;
@@ -77,7 +78,7 @@ public class AtendimentoController {
 		response.setContentType("application/octet-stream");
          
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=Atendimento_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd_MM_yyyy")) + ".xlsx";
+        String headerValue = "attachment; filename=Atendimento_" + LocalDate.now(ZoneId.of("America/Sao_Paulo")).format(DateTimeFormatter.ofPattern("dd_MM_yyyy")) + ".xlsx";
         response.setHeader(headerKey, headerValue);
 		atendimentoService.exportarExcel(response);
 	}
