@@ -38,7 +38,7 @@ public class AtendimentoService {
 
 	public void exportarExcel(HttpServletResponse response) {
 		try {
-			excelService.excelAtendimento(response, atendimentoRepository.findAll());
+			excelService.excelAtendimento(response, atendimentoRepository.findByOrderByDataAtendimentoAsc());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
