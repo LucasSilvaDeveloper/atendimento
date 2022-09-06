@@ -19,6 +19,10 @@
 			<div class="container-fluid">
 			
 			<div th:replace="fragments/mensagens-sucesso-salvar :: sucesso-save"></div>
+			
+			<div style="margin: 15px">
+				<a th:href="@{/atendimento/relatorio/excel}"><img alt="Download Excel" src="/icons/xls.png"></a>
+			</div>
 				
 				<div class="table-responsive">
 					<table class="table table-striped">

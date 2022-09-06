@@ -1,6 +1,10 @@
 package br.com.base.project.controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -66,6 +70,16 @@ public class AtendimentoController {
 		modelAndView.addObject("atendimento", atendimento);
 //		modelAndView.addObject("dataAtendimento", atendimento.getDataAtendimento());
 		return modelAndView;
+	}
+	
+	@RequestMapping("/relatorio/excel")
+	public void exportarExcel(HttpServletResponse response) {
+		response.setContentType("application/octet-stream");
+         
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=Atendimento_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd_MM_yyyy")) + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+		atendimentoService.exportarExcel(response);
 	}
 	
 	
