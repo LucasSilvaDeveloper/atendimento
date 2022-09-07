@@ -1,11 +1,13 @@
 package br.com.base.project.service;
 
 import java.io.IOException;
-import java.util.List;
+import java.time.LocalDate;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.base.project.model.Atendimento;
@@ -24,8 +26,8 @@ public class AtendimentoService {
 		atendimentoRepository.save(atendimento);
 	}
 
-	public List<Atendimento> findAll() {
-		return atendimentoRepository.findByOrderByIdDesc();
+	public Page<Atendimento> findAll(Pageable pageable) {
+		return atendimentoRepository.findAll(pageable);
 	}
 
 	public void deleteById(Long id) {
@@ -36,14 +38,18 @@ public class AtendimentoService {
 		return atendimentoRepository.findById(id).get();
 	}
 
-	public void exportarExcel(HttpServletResponse response) {
+	public void exportarExcel(HttpServletResponse response, LocalDate dataInicial, LocalDate dataFinal) {
 		try {
-			excelService.excelAtendimento(response, atendimentoRepository.findByOrderByDataAtendimentoAsc());
+			excelService.excelAtendimento(
+					response,
+					atendimentoRepository
+						.findByDataAtendimentoBetweenOrderByDataAtendimentoAsc(dataInicial.atStartOfDay(), dataFinal.atStartOfDay()),
+						dataInicial,
+						dataFinal);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
 	
 }

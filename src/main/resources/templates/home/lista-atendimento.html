@@ -19,11 +19,34 @@
 			<div class="container-fluid">
 			
 			<div th:replace="fragments/mensagens-sucesso-salvar :: sucesso-save"></div>
+
+			<form th:action="@{/atendimento/relatorio/excel}">
 			
-			<div style="margin: 15px">
-				<a th:href="@{/atendimento/relatorio/excel}"><img alt="Download Excel" src="/icons/xls.png"></a>
-			</div>
+				<div style="margin: 15px">
+					<label>Data de: &nbsp;</label>
+					<input type="date" name="dataInicial" id="dataInicial" required="required">
+					<label>&nbsp; Até: &nbsp;</label>
+					<input type="date" name="dataFinal" required="required">
 				
+					<button type="submit" style="display: contents;">
+						<img alt="Download Excel" src="/icons/xls.png" style="padding-left: 10px">
+					</button> 
+				</div>
+			</form>
+				
+					<nav aria-label="Page navigation example" style="text-align: center;">
+					  <ul class="pagination justify-content-center">
+					    <li th:class="${atendimentos.isFirst()} ? 'page-item hidden' : 'page-item'">
+					      <a class="page-link" th:href="@{/atendimento/listar(page=${atendimentos.number-1})}" tabindex="-1">Prev</a>
+					    </li>
+					    <li class="page-item">
+					    	<span class="page-link" th:text="|${atendimentos.number+1} de ${(atendimentos.totalPages == 0) ? 1 : atendimentos.totalPages}|"></span>
+					    </li>
+					    <li th:class="${atendimentos.isLast()} ?  'page-item hidden' : 'page-item'">
+					      <a class="page-link" th:href="@{/atendimento/listar(page=${atendimentos.number+1})}">Next</a>
+					    </li>
+					  </ul>
+					</nav>
 				<div class="table-responsive">
 					<table class="table table-striped">
 					  <thead>
@@ -43,13 +66,14 @@
 					      <td th:text="${atendimento.tipoAtendimento}"></td>
 					      <td th:text="${#temporals.format(atendimento.dataAtendimento, 'dd/MM/yyyy HH:mm')}"></td>
 					      <td><a th:href="@{'/atendimento/editar/'+${atendimento.id}}"><button type="button" class="btn btn-warning">Editar</button></a></td>
-					      <td><a th:href="@{'/atendimento/deletar/'+${atendimento.id}}"><button type="button" class="btn btn-danger">Deletar</button></a></td>
+					      <td><a th:href="@{'/atendimento/deletar/'+${atendimento.id}+'/'+${atendimentos.number+1}}"><button type="button" class="btn btn-danger">Deletar</button></a></td>
 					    </tr>
 					  </tbody>
 					</table>
 				</div>
-				
 			</div>
+			
+			<input type="text" hidden="true" name="pgnumber">
 	</section>
 </body>
 </html>
