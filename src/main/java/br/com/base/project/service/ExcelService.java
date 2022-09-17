@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -180,6 +181,7 @@ public class ExcelService {
         styleAux.setAlignment(HorizontalAlignment.LEFT);
         createCell(row, 1, atendimentos.size(), styleAux, sheet);
         createCell(row, 4, NumberFormat.getCurrencyInstance().format(new BigDecimal(valorTotalAtendimentos)), styleAux, sheet);
+        createCell(row, 4, NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(new BigDecimal(valorTotalAtendimentos)), styleAux, sheet);
     }
 	
 }
