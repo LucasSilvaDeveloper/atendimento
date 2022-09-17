@@ -1,10 +1,17 @@
 package br.com.base.project.service;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +39,8 @@ public class ExcelService {
     	
     	if (atendimentos.size() > 0) {
     		writeHeaderLine(workbook, sheet);
-    		writeDataLines(atendimentos, workbook, sheet);
+    		Integer valorTotalAtendimentos = this.atendimentoProcessor(atendimentos);
+    		writeDataLines(atendimentos, workbook, sheet, valorTotalAtendimentos);
 		}else {
 		    CellStyle style = workbook.createCellStyle();
 	        XSSFFont font = workbook.createFont();
@@ -52,7 +60,40 @@ public class ExcelService {
      
  
  
-    private void writeHeaderLine(XSSFWorkbook workbook, XSSFSheet sheet) {
+    private Integer atendimentoProcessor(List<Atendimento> atendimentos) {
+    	
+    	Integer valorTotal = 0;
+    	
+    	List<LocalDateTime> dates = atendimentos.stream().map(Atendimento::getDataAtendimento).collect(Collectors.toList());
+    	
+	    Map<Integer, List<LocalDateTime>> result = dates.stream().collect(Collectors.groupingBy(d -> d.get(	ChronoField.DAY_OF_MONTH)));
+	    	
+	    	
+	   	Collection<List<LocalDateTime>> values = result.values();
+   	
+	   	for (List<LocalDateTime> list : values) {
+				
+	   		 Map<Integer, List<LocalDateTime>> dateResult = list.stream().collect(Collectors.groupingBy(d -> d.get(	ChronoField.HOUR_OF_DAY)));
+	   		 
+	   		for (List<LocalDateTime> list1 : dateResult.values()) {
+	   				if (list1.size() == 1) {
+						valorTotal += 15;
+					}else if (list1.size() == 2) {
+						valorTotal += 20;
+					}else {
+						valorTotal += 25;
+					}
+				}
+	   		 
+	   		}
+	   	
+	   	return valorTotal;
+    	
+	}
+
+
+
+	private void writeHeaderLine(XSSFWorkbook workbook, XSSFSheet sheet) {
          
 	    Row row = sheet.createRow(2);
 	    
@@ -105,7 +146,7 @@ public class ExcelService {
         cell.setCellStyle(style);
     }
      
-    private void writeDataLines(List<Atendimento> atendimentos, XSSFWorkbook workbook, XSSFSheet sheet) {
+    private void writeDataLines(List<Atendimento> atendimentos, XSSFWorkbook workbook, XSSFSheet sheet, Integer valorTotalAtendimentos) {
         int rowCount = 4;
  
         CellStyle style = workbook.createCellStyle();
@@ -116,7 +157,7 @@ public class ExcelService {
         for (Atendimento atendimento : atendimentos) {
             Row row = sheet.createRow(rowCount++);
             int columnCount = 0;
-             
+            
             createCell(row, columnCount++, atendimento.getNomeFisioterapeuta(), style, sheet);
             createCell(row, columnCount++, atendimento.getTipoAtendimento(), style, sheet);
             createCell(row, columnCount++, atendimento.getDataAtendimento().toLocalDate(), style, sheet);
@@ -135,8 +176,10 @@ public class ExcelService {
         styleAux.setFont(fontAux);
         
         createCell(row, 0, "Total de registros:", styleAux, sheet);
+        createCell(row, 3, "Valor Total a Receber: R$", styleAux, sheet);
         styleAux.setAlignment(HorizontalAlignment.LEFT);
         createCell(row, 1, atendimentos.size(), styleAux, sheet);
+        createCell(row, 4, NumberFormat.getCurrencyInstance().format(new BigDecimal(valorTotalAtendimentos)), styleAux, sheet);
     }
 	
 }
