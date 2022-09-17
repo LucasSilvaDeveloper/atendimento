@@ -177,10 +177,9 @@ public class ExcelService {
         styleAux.setFont(fontAux);
         
         createCell(row, 0, "Total de registros:", styleAux, sheet);
-        createCell(row, 3, "Valor Total a Receber: R$", styleAux, sheet);
+        createCell(row, 3, "Valor Total a Receber:", styleAux, sheet);
         styleAux.setAlignment(HorizontalAlignment.LEFT);
         createCell(row, 1, atendimentos.size(), styleAux, sheet);
-        createCell(row, 4, NumberFormat.getCurrencyInstance().format(new BigDecimal(valorTotalAtendimentos)), styleAux, sheet);
         createCell(row, 4, NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(new BigDecimal(valorTotalAtendimentos)), styleAux, sheet);
     }
 	
