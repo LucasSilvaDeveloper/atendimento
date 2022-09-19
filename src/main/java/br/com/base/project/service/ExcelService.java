@@ -28,6 +28,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import br.com.base.project.model.Atendimento;
+import br.com.base.project.util.DateUtils;
 
 @Service
 public class ExcelService {
@@ -40,8 +41,7 @@ public class ExcelService {
     	
     	if (atendimentos.size() > 0) {
     		writeHeaderLine(workbook, sheet);
-    		Integer valorTotalAtendimentos = this.atendimentoProcessor(atendimentos);
-    		writeDataLines(atendimentos, workbook, sheet, valorTotalAtendimentos);
+    		writeDataLines(atendimentos, workbook, sheet, this.atendimentoProcessor(atendimentos));
 		}else {
 		    CellStyle style = workbook.createCellStyle();
 	        XSSFFont font = workbook.createFont();
@@ -65,31 +65,31 @@ public class ExcelService {
     	
     	Integer valorTotal = 0;
     	
-    	List<LocalDateTime> dates = atendimentos.stream().map(Atendimento::getDataAtendimento).collect(Collectors.toList());
+    	List<LocalDateTime> atendimentoDates = atendimentos.stream().map(Atendimento::getDataAtendimento).collect(Collectors.toList());
     	
-	    Map<Integer, List<LocalDateTime>> result = dates.stream().collect(Collectors.groupingBy(d -> d.get(	ChronoField.DAY_OF_MONTH)));
-	    	
-	    	
-	   	Collection<List<LocalDateTime>> values = result.values();
+    	Map<Integer, List<LocalDateTime>> monthsOfYear = atendimentoDates.stream().collect(Collectors.groupingBy(d -> d.get(ChronoField.MONTH_OF_YEAR)));
    	
-	   	for (List<LocalDateTime> list : values) {
-				
-	   		 Map<Integer, List<LocalDateTime>> dateResult = list.stream().collect(Collectors.groupingBy(d -> d.get(	ChronoField.HOUR_OF_DAY)));
-	   		 
-	   		for (List<LocalDateTime> list1 : dateResult.values()) {
+	   	for (List<LocalDateTime> monthOfMonth : monthsOfYear.values()) {
+	   		
+	   		Map<Integer, List<LocalDateTime>> daysOfMonth = monthOfMonth.stream().collect(Collectors.groupingBy(d -> d.get(ChronoField.DAY_OF_MONTH)));
+			
+	   		for (List<LocalDateTime> dayOfMonth : daysOfMonth.values()) {
+	   			
+	   			Map<Integer, List<LocalDateTime>> hoursOfDay = dayOfMonth.stream().collect(Collectors.groupingBy(d -> d.get(ChronoField.HOUR_OF_DAY)));
+	   			
+	   			for (List<LocalDateTime> list1 : hoursOfDay.values()) {
 	   				if (list1.size() == 1) {
-						valorTotal += 15;
-					}else if (list1.size() == 2) {
-						valorTotal += 20;
-					}else {
-						valorTotal += 25;
-					}
-				}
-	   		 
+	   					valorTotal += 15;
+	   				}else if (list1.size() == 2) {
+	   					valorTotal += 20;
+	   				}else {
+	   					valorTotal += 25;
+	   				}
+	   			}
 	   		}
+		}
 	   	
 	   	return valorTotal;
-    	
 	}
 
 
@@ -168,7 +168,6 @@ public class ExcelService {
         }
         
         Row row = sheet.createRow(rowCount+=2);
-        
 
         CellStyle styleAux = workbook.createCellStyle();
         XSSFFont fontAux = workbook.createFont();
@@ -182,5 +181,4 @@ public class ExcelService {
         createCell(row, 1, atendimentos.size(), styleAux, sheet);
         createCell(row, 4, NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(new BigDecimal(valorTotalAtendimentos)), styleAux, sheet);
     }
-	
 }
