@@ -2,6 +2,7 @@ package br.com.base.project.service;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -43,7 +44,7 @@ public class AtendimentoService {
 			excelService.excelAtendimento(
 					response,
 					atendimentoRepository
-						.findByDataAtendimentoBetweenOrderByDataAtendimentoAsc(dataInicial.atStartOfDay(), dataFinal.atStartOfDay()),
+						.findByDataAtendimentoBetweenOrderByDataAtendimentoAsc(dataInicial.atStartOfDay(), dataFinal.atTime(LocalTime.MAX)),
 						dataInicial,
 						dataFinal);
 		} catch (IOException e) {
