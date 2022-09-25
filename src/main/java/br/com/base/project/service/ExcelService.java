@@ -79,7 +79,6 @@ public class ExcelService {
 						}else {
 							valorTotal += 15;
 						}
-	   					valorTotal += 15;
 	   				}else if (list1.size() == 2) {
 	   					valorTotal += 20;
 	   				}else {
