@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -49,7 +50,7 @@ public class AtendimentoController {
 	}
 	
 	@RequestMapping("/listar")
-	public ModelAndView listar(@PageableDefault(size = 10) Pageable pageable, RedirectAttributes attributes, String pgnumber) {
+	public ModelAndView listar(@PageableDefault(size = 10, sort = "dataAtendimento", direction = Direction.DESC) Pageable pageable, RedirectAttributes attributes, String pgnumber) {
 		ModelAndView modelAndView = new ModelAndView("home/lista-atendimento");
 		Page<Atendimento> atendimentos = null;
 		if (pgnumber != null && Integer.parseInt(pgnumber) > 1) {
