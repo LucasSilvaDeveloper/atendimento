@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
@@ -63,20 +62,23 @@ public class ExcelService {
     	
     	Integer valorTotal = 0;
     	
-    	List<LocalDateTime> atendimentoDates = atendimentos.stream().map(Atendimento::getDataAtendimento).collect(Collectors.toList());
-    	
-    	Map<Integer, List<LocalDateTime>> monthsOfYear = atendimentoDates.stream().collect(Collectors.groupingBy(d -> d.get(ChronoField.MONTH_OF_YEAR)));
+    	Map<Integer, List<Atendimento>> monthsOfYear = atendimentos.stream().collect(Collectors.groupingBy(d -> d.getDataAtendimento().get(ChronoField.MONTH_OF_YEAR)));
    	
-	   	for (List<LocalDateTime> monthOfMonth : monthsOfYear.values()) {
+	   	for (List<Atendimento> monthOfMonth : monthsOfYear.values()) {
 	   		
-	   		Map<Integer, List<LocalDateTime>> daysOfMonth = monthOfMonth.stream().collect(Collectors.groupingBy(d -> d.get(ChronoField.DAY_OF_MONTH)));
+	   		Map<Integer, List<Atendimento>> daysOfMonth = monthOfMonth.stream().collect(Collectors.groupingBy(d -> d.getDataAtendimento().get(ChronoField.DAY_OF_MONTH)));
 			
-	   		for (List<LocalDateTime> dayOfMonth : daysOfMonth.values()) {
+	   		for (List<Atendimento> dayOfMonth : daysOfMonth.values()) {
 	   			
-	   			Map<Integer, List<LocalDateTime>> hoursOfDay = dayOfMonth.stream().collect(Collectors.groupingBy(d -> d.get(ChronoField.HOUR_OF_DAY)));
+	   			Map<Integer, List<Atendimento>> hoursOfDay = dayOfMonth.stream().collect(Collectors.groupingBy(d -> d.getDataAtendimento().get(ChronoField.HOUR_OF_DAY)));
 	   			
-	   			for (List<LocalDateTime> list1 : hoursOfDay.values()) {
+	   			for (List<Atendimento> list1 : hoursOfDay.values()) {
 	   				if (list1.size() == 1) {
+	   					if (list1.get(0).getTipoAtendimento().equalsIgnoreCase("Massagem") ||list1.get(0).getTipoAtendimento().equalsIgnoreCase("Fisioterapia")) {
+							valorTotal+=25;
+						}else {
+							valorTotal += 15;
+						}
 	   					valorTotal += 15;
 	   				}else if (list1.size() == 2) {
 	   					valorTotal += 20;
