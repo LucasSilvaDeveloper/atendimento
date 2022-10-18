@@ -29,8 +29,8 @@
 					
 						<div class="col-sm-6">
 							<div class="form-group">
-								<label for="nome">Nome da Fisioterapeuta</label>
-								<input id="nome" type="text" class="form-control" th:field="*{nomeFisioterapeuta}"/>
+								<label for="nomeFisio">Nome da Fisioterapeuta</label>
+								<input id="nomeFisio" type="text" class="form-control" th:field="*{nomeFisioterapeuta}"/>
 							</div>
 						</div>
 						
@@ -49,20 +49,21 @@
 							<div class="loja-field-action">
 								<select id="estilo" class="form-control" th:field="*{tipoAtendimento}">
 									<option value="Pilates" selected="selected">Pilates</option>
+									<option value="Pilates individual" selected="selected">Pilates individual</option>
 									<option value="Pilates Kids">Pilates Kids</option>
 									<option value="Fisioterapia">Fisioterapia</option>
 									<option value="Massagem">Massagem</option>
+									<option value="Avaliação">Avaliação</option>
 								</select>	 
 							</div>
 						</div>
 						
 						<div class="col-sm-3">
 							<div class="form-group">
-								<label for="dataNascimento">Data e Horario do Atendimento</label>
+								<label for="dataAtendimento">Data e Horario do Atendimento</label>
 								<input id="dataAtendimento" type="datetime-local" class="form-control" required="required" th:field="*{dataAtendimento}"/>
 							</div>
 						</div>
-						
 					</div>
 				
 					<div class="form-group">
