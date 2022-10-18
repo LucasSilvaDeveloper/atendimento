@@ -74,7 +74,7 @@ public class ExcelService {
 	   			
 	   			for (List<Atendimento> list1 : hoursOfDay.values()) {
 	   				if (list1.size() == 1) {
-	   					if (list1.get(0).getTipoAtendimento().equalsIgnoreCase("Massagem") ||list1.get(0).getTipoAtendimento().equalsIgnoreCase("Fisioterapia")) {
+	   					if (isAtendimentoValorUnico(list1)) {
 							valorTotal+=25;
 						}else {
 							valorTotal += 15;
@@ -91,7 +91,12 @@ public class ExcelService {
 	   	return valorTotal;
 	}
 
-
+	private boolean isAtendimentoValorUnico(List<Atendimento> list1) {
+		return list1.get(0).getTipoAtendimento().equalsIgnoreCase("Massagem") ||
+				list1.get(0).getTipoAtendimento().equalsIgnoreCase("Fisioterapia") ||
+				list1.get(0).getTipoAtendimento().equalsIgnoreCase("Pilates individual") ||
+				list1.get(0).getTipoAtendimento().equalsIgnoreCase("Avaliação");
+	}
 
 	private void writeHeaderLine(XSSFWorkbook workbook, XSSFSheet sheet) {
          
